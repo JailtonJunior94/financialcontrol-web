@@ -1,3 +1,6 @@
+import React, { FormEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import {
     CButton,
     CCard,
@@ -11,10 +14,38 @@ import {
     CInputGroupPrepend,
     CInputGroupText,
     CRow
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
 
-export default function Login() {
+import { useAuth } from '../../hooks/auth';
+
+
+export function SignIn() {
+    const { signIn } = useAuth();
+    const history = useHistory();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('')
+
+    async function handleSignIn(event: FormEvent) {
+        event.preventDefault();
+
+        await signIn({ email, password });
+
+        setEmail('');
+        setPassword('');
+
+        history.push('/dashboard');
+    }
+
+    function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {
+        setEmail(e.target.value)
+    }
+
+    function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
+        setPassword(e.target.value)
+    }
+
     return (
         <div className="c-app c-default-layout flex-row align-items-center">
             <CContainer>
@@ -23,14 +54,20 @@ export default function Login() {
                         <CCardGroup>
                             <CCard className="p-4">
                                 <CCardBody>
-                                    <CForm>
+                                    <CForm onSubmit={handleSignIn}>
                                         <CInputGroup className="mb-3">
                                             <CInputGroupPrepend>
                                                 <CInputGroupText>
                                                     <CIcon name="cil-user" />
                                                 </CInputGroupText>
                                             </CInputGroupPrepend>
-                                            <CInput type="text" placeholder="E-mail" autoComplete="email" />
+                                            <CInput
+                                                type="text"
+                                                placeholder="E-mail"
+                                                autoComplete="email"
+                                                value={email}
+                                                onChange={handleEmail}
+                                            />
                                         </CInputGroup>
                                         <CInputGroup className="mb-4">
                                             <CInputGroupPrepend>
@@ -38,11 +75,17 @@ export default function Login() {
                                                     <CIcon name="cil-lock-locked" />
                                                 </CInputGroupText>
                                             </CInputGroupPrepend>
-                                            <CInput type="password" placeholder="Senha" autoComplete="password" />
+                                            <CInput
+                                                type="password"
+                                                placeholder="Senha"
+                                                autoComplete="password"
+                                                value={password}
+                                                onChange={handlePassword}
+                                            />
                                         </CInputGroup>
                                         <CRow>
                                             <CCol xs="12">
-                                                <CButton color="dark" size="lg" className="btn-square">Entrar</CButton>
+                                                <CButton type="submit" color="dark" size="lg" className="btn-square">Entrar</CButton>
                                             </CCol>
                                         </CRow>
                                     </CForm>
@@ -53,5 +96,5 @@ export default function Login() {
                 </CRow>
             </CContainer>
         </div>
-    )
+    );
 }
