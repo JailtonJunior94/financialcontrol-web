@@ -18,7 +18,7 @@ import {
 import CIcon from '@coreui/icons-react';
 
 import { useAuth } from '../../hooks/auth';
-
+import { Logo } from './styles';
 
 export function SignIn() {
     const { signIn } = useAuth();
@@ -49,6 +49,9 @@ export function SignIn() {
     return (
         <div className="c-app c-default-layout flex-row align-items-center">
             <CContainer>
+                <Logo>
+                    <h1><b> Financial</b> Control</h1>
+                </Logo>
                 <CRow className="justify-content-center">
                     <CCol md="8">
                         <CCardGroup>
@@ -84,8 +87,8 @@ export function SignIn() {
                                             />
                                         </CInputGroup>
                                         <CRow>
-                                            <CCol xs="12">
-                                                <CButton type="submit" color="dark" size="lg" className="btn-square">Entrar</CButton>
+                                            <CCol sm={{ size: 12 }}>
+                                                <CButton className="btn-square" type="submit" color="dark" size="lg" block>Entrar</CButton>
                                             </CCol>
                                         </CRow>
                                     </CForm>

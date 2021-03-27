@@ -1,5 +1,5 @@
 import { CContainer } from '@coreui/react'
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 interface ContentProps {
   children: ReactNode;
@@ -7,8 +7,10 @@ interface ContentProps {
 
 export function Content({ children }: ContentProps) {
   return (
-    <CContainer fluid>
-      {children}
-    </CContainer>
+    <main className="c-main">
+      <CContainer fluid>
+        {children}
+      </CContainer>
+    </main>
   );
 }

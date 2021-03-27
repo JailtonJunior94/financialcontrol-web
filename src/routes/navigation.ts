@@ -3,12 +3,18 @@ const navigation = [
         _tag: 'CSidebarNavItem',
         name: 'Dashboard',
         to: '/dashboard',
-        icon: 'cil-drop',
+        icon: 'cil-airplay',
     },
     {
         _tag: 'CSidebarNavItem',
         name: 'Transações',
         to: '/transactions',
+        icon: 'cil-puzzle'
+    },
+    {
+        _tag: 'CSidebarNavItem',
+        name: 'Cartões',
+        to: '/cards',
         icon: 'cil-puzzle'
     }
 ]

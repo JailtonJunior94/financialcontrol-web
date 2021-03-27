@@ -1,5 +1,12 @@
+import { Layout } from '../../components/Layout';
+import { SearchTransactions } from '../../components/SearchTransactions';
+import { TransactionsTable } from '../../components/TransactionsTable';
+
 export function Transactions() {
     return (
-        <h2>Transactions</h2>
+        <Layout>
+            <SearchTransactions />
+            <TransactionsTable />
+        </Layout>
     );
 }
