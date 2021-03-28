@@ -5,11 +5,14 @@ import {
     CDataTable,
     CRow
 } from '@coreui/react'
+import { useHistory } from 'react-router';
 
 import { useTransaction } from '../../hooks/transaction';
 import { formatDate, formatMoney } from '../../utils/formats';
 
 export function TransactionsTable() {
+    const history = useHistory();
+
     const { transactions } = useTransaction();
     const fields = ['data', 'entrada', 'saida', 'total']
 
@@ -37,8 +40,8 @@ export function TransactionsTable() {
                             items={items}
                             fields={fields}
                             itemsPerPage={12}
-                            onRowClick={(e: any) => {
-                                console.log(e)
+                            onRowClick={(item: any) => {
+                                history.push(`/transactions/${item.id}`)
                             }}
                         />
                     </CCardBody>

@@ -9,15 +9,6 @@ interface Transaction {
     income: number;
     outcome: number;
     active: boolean;
-    items: TransactionItem[]
-}
-
-interface TransactionItem {
-    id: string;
-    title: string;
-    value: number;
-    type: string;
-    active: boolean;
 }
 
 interface TransactionsProviderProps {
@@ -36,7 +27,6 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     useEffect(() => {
         api.get<Transaction[]>('api/v1/transactions')
             .then(response => {
-                console.log(response);
                 setTransactions(response.data)
             });
     }, [])
