@@ -1,6 +1,4 @@
-import {
-    CHeader
-} from '@coreui/react';
+import { CHeader } from '@coreui/react';
 
 export function Header() {
     return (

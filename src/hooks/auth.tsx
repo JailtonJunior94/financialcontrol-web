@@ -43,11 +43,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
 
         const { token } = response.data
+        setData({ token });
 
         localStorage.setItem('@FinancialControl:token', token);
         api.defaults.headers.authorization = `Bearer ${token}`;
-
-        setData({ token });
     }
 
     return (

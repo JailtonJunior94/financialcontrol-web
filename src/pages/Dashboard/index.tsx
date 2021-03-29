@@ -1,19 +1,38 @@
-import { CChartBar } from '@coreui/react-chartjs'
+import { useEffect, useState } from 'react';
+import { CChartBar } from '@coreui/react-chartjs';
 import {
     CCard,
     CCardBody,
     CCardHeader,
-    CCardGroup
-} from '@coreui/react'
+    CCardGroup,
+    CSpinner
+} from '@coreui/react';
 
-import { useTransaction } from "../../hooks/transaction";
+import { api } from '../../services/api';
 import { Layout } from '../../components/Layout';
+import { Transaction } from '../../models/transactions';
 
 export function Dashboard() {
-    const { transactions } = useTransaction();
+    const [isLoading, setIsLoading] = useState(true);
+    const [transactions, setTransactions] = useState<Transaction[]>([])
+
+    useEffect(() => {
+        api.get<Transaction[]>('api/v1/transactions')
+            .then(response => {
+                setTransactions(response.data);
+                setIsLoading(false);
+            });
+    }, [])
+
     return (
         <Layout>
-            <CCardGroup columns className="cols-2" >
+            {isLoading &&
+                <CSpinner
+                    color="primary"
+                    style={{ width: '7rem', height: '7rem', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
+                />
+            }
+            {transactions.length !== 0 && (<CCardGroup columns className="cols-2" >
                 <CCard>
                     <CCardHeader>Transações Mensais</CCardHeader>
                     <CCardBody>
@@ -50,8 +69,8 @@ export function Dashboard() {
                                 "Dez/2021"
                             ]}
                             options={{
-                            tooltips: { enabled: true }
-                        }}
+                                tooltips: { enabled: true }
+                            }}
                         />
                     </CCardBody>
                 </CCard>
@@ -84,6 +103,7 @@ export function Dashboard() {
                     </CCardBody>
                 </CCard>
             </CCardGroup>
+            )}
         </Layout>
     );
 }

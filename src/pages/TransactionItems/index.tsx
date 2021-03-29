@@ -5,29 +5,12 @@ import { CSpinner, CAlert } from '@coreui/react'
 import { api } from '../../services/api';
 
 import { Layout } from '../../components/Layout';
+import { Transaction, TransactionItem } from '../../models/transactions';
 import { TransactionItemsTable } from '../../components/TransactionItemsTable';
 import { SearchTransactionItem } from '../../components/SearchTransactionItem';
 
 interface Params {
     id: string;
-}
-
-interface Transaction {
-    id: string;
-    date: Date;
-    total: number;
-    income: number;
-    outcome: number;
-    active: boolean;
-    items: TransactionItem[]
-}
-
-interface TransactionItem {
-    id: string;
-    title: string;
-    value: number;
-    type: string;
-    active: boolean;
 }
 
 export function TransactionItems() {

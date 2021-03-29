@@ -16,9 +16,10 @@ import {
     CRow
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
+import { freeSet } from '@coreui/icons';
 
-import { useAuth } from '../../hooks/auth';
 import { Logo } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
     const { signIn } = useAuth();
@@ -61,7 +62,7 @@ export function SignIn() {
                                         <CInputGroup className="mb-3">
                                             <CInputGroupPrepend>
                                                 <CInputGroupText>
-                                                    <CIcon name="cil-user" />
+                                                    <CIcon content={freeSet.cilUser} />
                                                 </CInputGroupText>
                                             </CInputGroupPrepend>
                                             <CInput
@@ -75,7 +76,7 @@ export function SignIn() {
                                         <CInputGroup className="mb-4">
                                             <CInputGroupPrepend>
                                                 <CInputGroupText>
-                                                    <CIcon name="cil-lock-locked" />
+                                                    <CIcon content={freeSet.cilLockLocked} />
                                                 </CInputGroupText>
                                             </CInputGroupPrepend>
                                             <CInput

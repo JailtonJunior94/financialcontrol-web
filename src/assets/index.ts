@@ -22,7 +22,8 @@ import {
     cibStripe,
     cibPaypal,
     cibGooglePay,
-    cibCcAmex
+    cibCcAmex,
+    cilClipboard
 } from '@coreui/icons';
 
 import {
@@ -129,6 +130,7 @@ import {
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
+    cilClipboard,
     cilAlignCenter,
     cilAlignLeft,
     cilAlignRight,

@@ -6,19 +6,19 @@ import {
     CRow
 } from '@coreui/react'
 
-import { formatMoney } from '../../utils/formats';
 import { Item } from './styles';
-
-interface TransactionItem {
-    id: string;
-    title: string;
-    value: number;
-    type: string;
-    active: boolean;
-}
+import { formatMoney } from '../../utils/formats';
+import { TransactionItem } from '../../models/transactions';
 
 interface TransactionItemsTableProps {
     transactionsItems: TransactionItem[]
+}
+
+interface ItemsTable {
+    id: string;
+    type: string;
+    titulo: string;
+    valor: string;
 }
 
 export function TransactionItemsTable({ transactionsItems }: TransactionItemsTableProps) {
@@ -48,7 +48,7 @@ export function TransactionItemsTable({ transactionsItems }: TransactionItemsTab
                             fields={fields}
                             itemsPerPage={10}
                             scopedSlots={{
-                                'valor': (item: any) => (
+                                'valor': (item: ItemsTable) => (
                                     <Item className={item.type}>
                                         {item.type === "OUTCOME" ? '-' : ''} {item.valor}
                                     </Item>

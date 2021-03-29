@@ -1,4 +1,4 @@
-import { CContainer } from '@coreui/react'
+import { CContainer } from '@coreui/react';
 import React, { ReactNode } from 'react';
 
 interface ContentProps {

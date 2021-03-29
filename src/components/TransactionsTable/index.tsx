@@ -4,16 +4,26 @@ import {
     CCol,
     CDataTable,
     CRow
-} from '@coreui/react'
+} from '@coreui/react';
 import { useHistory } from 'react-router';
 
-import { useTransaction } from '../../hooks/transaction';
+import { Transaction } from '../../models/transactions';
 import { formatDate, formatMoney } from '../../utils/formats';
 
-export function TransactionsTable() {
-    const history = useHistory();
+interface ItemsTable {
+    id: string;
+    data: string;
+    entrada: string;
+    saida: string;
+    total: string;
+}
 
-    const { transactions } = useTransaction();
+interface TransactionsTableProps {
+    transactions: Transaction[]
+}
+
+export function TransactionsTable({ transactions }: TransactionsTableProps) {
+    const history = useHistory();
     const fields = ['data', 'entrada', 'saida', 'total']
 
     const items = transactions.map(transaction => {
@@ -40,8 +50,8 @@ export function TransactionsTable() {
                             items={items}
                             fields={fields}
                             itemsPerPage={12}
-                            onRowClick={(item: any) => {
-                                history.push(`/transactions/${item.id}`)
+                            onRowClick={(item: ItemsTable) => {
+                                history.push(`/transacoes/${item.id}`)
                             }}
                         />
                     </CCardBody>

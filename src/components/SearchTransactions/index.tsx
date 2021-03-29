@@ -13,7 +13,7 @@ import {
 
     CLink
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
 
 export function SearchTransactions() {
     const [collapsed, setCollapsed] = useState(true)
@@ -31,7 +31,7 @@ export function SearchTransactions() {
                             <CCol xs="4">
                                 <CFormGroup>
                                     <CLabel>Meses</CLabel>
-                                    <CSelect size="lg" name="selectLg" id="selectLg">
+                                    <CSelect name="selectLg" id="selectLg">
                                         <option value="0">Please select</option>
                                         <option value="1">Option #1</option>
                                         <option value="2">Option #2</option>
@@ -54,7 +54,7 @@ export function SearchTransactions() {
                                 <CButton
                                     className='btn-square'
                                     type='submit'
-                                    color="secondary" block><i className='fa fa-plus'></i> Pesquisar
+                                    color="secondary" block><i className='fa fa-search'></i> Pesquisar
                                 </CButton>
                             </CCol>
                         </CRow>

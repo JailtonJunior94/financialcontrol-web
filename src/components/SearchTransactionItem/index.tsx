@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     CRow,
     CCol,
@@ -9,22 +8,15 @@ import {
     CButton,
     CFormGroup,
     CLabel,
-    CInput,
-    CLink
+    CInput
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react'
 
 export function SearchTransactionItem() {
-    const [collapsed, setCollapsed] = useState(true)
     return (
         <CRow>
             <CCol xs="12" sm="12" md="12">
                 <CCard>
-                    <CCardHeader>Transações itens
-                    <CLink className="card-header-action" onClick={() => setCollapsed(!collapsed)}>
-                            <CIcon name={collapsed ? 'cil-chevron-bottom' : 'cil-chevron-top'} />
-                        </CLink>
-                    </CCardHeader>
+                    <CCardHeader>Transações itens</CCardHeader>
                     <CCardBody>
                         <CRow>
                             <CCol xs="4">
@@ -52,7 +44,7 @@ export function SearchTransactionItem() {
                                 <CButton
                                     className='btn-square'
                                     type='submit'
-                                    color="secondary" block><i className='fa fa-plus'></i> Pesquisar
+                                    color="secondary" block><i className='fa fa-search'></i> Pesquisar
                                 </CButton>
                             </CCol>
                         </CRow>
