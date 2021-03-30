@@ -24,11 +24,10 @@ export function NewTransactionModal() {
     }
 
     async function handleCreateNewTransaction(event: FormEvent) {
-        event.preventDefault()
+        event.preventDefault();
 
         await createTransaction({ date: new Date(date) });
 
-        setDate('');
         handleCloseNewTransactionModal();
     }
 
@@ -61,13 +60,6 @@ export function NewTransactionModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>{' '}
-                    <CButton
-                        className='btn-square'
-                        color="secondary"
-                        onClick={handleCloseNewTransactionModal}
-                        block
-                    >Cancel
                 </CButton>
                 </CModalFooter>
             </CForm>

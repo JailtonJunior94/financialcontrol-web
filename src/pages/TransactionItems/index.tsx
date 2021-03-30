@@ -2,38 +2,31 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { CSpinner, CAlert } from '@coreui/react'
 
-import { api } from '../../services/api';
-
 import { Layout } from '../../components/Layout';
-import { Transaction, TransactionItem } from '../../models/transactions';
 import { TransactionItemsTable } from '../../components/TransactionItemsTable';
 import { SearchTransactionItem } from '../../components/SearchTransactionItem';
 import { NewTransactionItemModal } from '../../components/NewTransactionItemModal';
-
-interface Params {
-    id: string;
-}
+import { Params } from '../../models/params';
+import { useTransaction } from '../../hooks/transaction';
 
 export function TransactionItems() {
     const { id } = useParams<Params>();
     const [isLoading, setIsLoading] = useState(true);
-    const [transactions, setTransactions] = useState<TransactionItem[]>([]);
+    const { transactionItems, loadTransactionItems } = useTransaction();
 
     useEffect(() => {
-        api.get<Transaction>(`api/v1/transactions/${id}`)
-            .then(response => {
-                setTransactions(response.data.items ?? []);
-                setIsLoading(false);
-            });
-    }, [id]);
+        loadTransactionItems(id);
+        setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id])
 
     return (
         <Layout>
             <SearchTransactionItem />
-            {transactions.length !== 0 && (
-                <TransactionItemsTable transactionsItems={transactions} />
+            {transactionItems.length !== 0 && (
+                <TransactionItemsTable transactionsItems={transactionItems} />
             )}
-            {transactions.length === 0 && (
+            {transactionItems.length === 0 && (
                 <CAlert color="warning" closeButton>Nenhum item encontrado!</CAlert>
             )}
             {isLoading &&

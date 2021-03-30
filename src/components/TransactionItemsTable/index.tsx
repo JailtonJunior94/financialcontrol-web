@@ -4,11 +4,12 @@ import {
     CCol,
     CDataTable,
     CRow
-} from '@coreui/react'
+} from '@coreui/react';
 
 import { Item } from './styles';
 import { formatMoney } from '../../utils/formats';
 import { TransactionItem } from '../../models/transactions';
+import { useTransaction } from '../../hooks/transaction';
 
 interface TransactionItemsTableProps {
     transactionsItems: TransactionItem[]
@@ -17,17 +18,21 @@ interface TransactionItemsTableProps {
 interface ItemsTable {
     id: string;
     type: string;
+    value: number;
     titulo: string;
     valor: string;
 }
 
 export function TransactionItemsTable({ transactionsItems }: TransactionItemsTableProps) {
+    const { handleOpenEditTransactionItemModal } = useTransaction();
+
     const fields = ['titulo', 'valor']
 
     const items = transactionsItems.map(item => {
         return {
             id: item.id,
             type: item.type,
+            value: item.value,
             titulo: item.title,
             valor: formatMoney(item.value),
         }
@@ -53,6 +58,13 @@ export function TransactionItemsTable({ transactionsItems }: TransactionItemsTab
                                         {item.type === "OUTCOME" ? '-' : ''} {item.valor}
                                     </Item>
                                 )
+                            }}
+                            onRowClick={(item: ItemsTable) => {
+                                handleOpenEditTransactionItemModal(item.id, {
+                                    type: item.type,
+                                    title: item.titulo,
+                                    value: item.value
+                                });
                             }}
                         />
                     </CCardBody>

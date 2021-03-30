@@ -11,7 +11,10 @@ import {
     CInput
 } from '@coreui/react';
 
+import { useTransaction } from '../../hooks/transaction';
+
 export function SearchTransactionItem() {
+    const { handleOpenNewTransactionItemModal } = useTransaction();
     return (
         <CRow>
             <CCol xs="12" sm="12" md="12">
@@ -35,6 +38,7 @@ export function SearchTransactionItem() {
                         <CRow className="d-flex justify-content-end">
                             <CCol xs="2" sm="2" md="2">
                                 <CButton
+                                    onClick={handleOpenNewTransactionItemModal}
                                     className='btn-square'
                                     type='submit'
                                     color="info" block><i className='fa fa-plus'></i> Novo
