@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     CRow,
     CCol,
@@ -9,23 +8,18 @@ import {
     CButton,
     CFormGroup,
     CLabel,
-    CSelect,
-
-    CLink
+    CSelect
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
+
+import { useTransaction } from '../../hooks/transaction';
 
 export function SearchTransactions() {
-    const [collapsed, setCollapsed] = useState(true)
+    const { handleOpenNewTransactionModal } = useTransaction();
     return (
         <CRow>
             <CCol xs="12" sm="12" md="12">
                 <CCard>
-                    <CCardHeader>Transações
-                    <CLink className="card-header-action" onClick={() => setCollapsed(!collapsed)}>
-                            <CIcon name={collapsed ? 'cil-chevron-bottom' : 'cil-chevron-top'} />
-                        </CLink>
-                    </CCardHeader>
+                    <CCardHeader>Transações </CCardHeader>
                     <CCardBody>
                         <CRow>
                             <CCol xs="4">
@@ -45,9 +39,10 @@ export function SearchTransactions() {
                         <CRow className="d-flex justify-content-end">
                             <CCol xs="2" sm="2" md="2">
                                 <CButton
+                                    onClick={handleOpenNewTransactionModal}
                                     className='btn-square'
-                                    type='submit'
-                                    color="info" block><i className='fa fa-plus'></i> Novo mês
+                                    type='button'
+                                    color="info" block><i className='fa fa-plus'></i> Novo
                                 </CButton>
                             </CCol>
                             <CCol xs="2" sm="2" md="2">

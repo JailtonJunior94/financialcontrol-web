@@ -8,6 +8,7 @@ import { Layout } from '../../components/Layout';
 import { Transaction, TransactionItem } from '../../models/transactions';
 import { TransactionItemsTable } from '../../components/TransactionItemsTable';
 import { SearchTransactionItem } from '../../components/SearchTransactionItem';
+import { NewTransactionItemModal } from '../../components/NewTransactionItemModal';
 
 interface Params {
     id: string;
@@ -41,6 +42,7 @@ export function TransactionItems() {
                     style={{ width: '7rem', height: '7rem', marginLeft: 'auto', marginRight: 'auto', display: 'block' }}
                 />
             }
+            <NewTransactionItemModal />
         </Layout>
     );
 }
