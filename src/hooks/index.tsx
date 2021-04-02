@@ -1,14 +1,17 @@
 import React from 'react';
 
 import { AuthProvider } from './auth';
+import { ToastProvider } from './toast';
 import { TransactionsProvider } from './transaction';
 
 const AppProvider: React.FC = ({ children }) => {
     return (
         <AuthProvider>
-            <TransactionsProvider>
-                {children}
-            </TransactionsProvider>
+            <ToastProvider>
+                <TransactionsProvider>
+                    {children}
+                </TransactionsProvider>
+            </ToastProvider>
         </AuthProvider>
     );
 };

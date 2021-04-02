@@ -14,8 +14,10 @@ import {
 import { FormEvent, useState } from 'react';
 
 import { useTransaction } from '../../hooks/transaction';
+import { useToast } from '../../hooks/toast';
 
 export function NewTransactionModal() {
+    const { addToast } = useToast();
     const { isNewTransactionModalOpen, handleCloseNewTransactionModal, createTransaction } = useTransaction();
     const [date, setDate] = useState('');
 
@@ -26,9 +28,24 @@ export function NewTransactionModal() {
     async function handleCreateNewTransaction(event: FormEvent) {
         event.preventDefault();
 
-        await createTransaction({ date: new Date(date) });
+        try {
+            await createTransaction({ date: new Date(date) });
 
-        handleCloseNewTransactionModal();
+            addToast({
+                type: 'success',
+                title: 'Nova transação',
+                description: 'Transação cadastrada com sucesso'
+            });
+
+            setDate('');
+            handleCloseNewTransactionModal();
+        } catch (error) {
+            addToast({
+                type: 'error',
+                title: 'Erro ao cadastrar transação',
+                description: error.response.data.error
+            });
+        }
     }
 
     return (

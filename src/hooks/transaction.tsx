@@ -144,7 +144,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     );
 }
 
-export function useTransaction() {
+export function useTransaction(): TransactionsContextData {
     const context = useContext(TransactionsContext)
     if (!context) {
         throw new Error('useTransaction must be used within an AuthProvider');

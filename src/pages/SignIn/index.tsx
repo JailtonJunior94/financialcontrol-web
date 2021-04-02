@@ -20,23 +20,34 @@ import { freeSet } from '@coreui/icons';
 
 import { Logo } from './styles';
 import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 export function SignIn() {
-    const { signIn } = useAuth();
     const history = useHistory();
+
+    const { signIn } = useAuth();
+    const { addToast } = useToast();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
 
     async function handleSignIn(event: FormEvent) {
-        event.preventDefault();
+        try {
+            event.preventDefault();
 
-        await signIn({ email, password });
+            await signIn({ email, password });
 
-        setEmail('');
-        setPassword('');
+            setEmail('');
+            setPassword('');
 
-        history.push('/dashboard');
+            history.push('/dashboard');
+        } catch (error) {
+            addToast({
+                type: 'error',
+                title: 'Erro na autenticação',
+                description: error.response.data.error
+            });
+        }
     }
 
     function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {

@@ -17,11 +17,13 @@ import { useParams } from 'react-router-dom';
 import { Params } from '../../models/params';
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
+import { useToast } from '../../hooks/toast';
 import { useTransaction } from '../../hooks/transaction';
 import { TransactionTypeContainer, RadioBox } from './styles';
 
 export function NewTransactionItemModal() {
     const { id } = useParams<Params>();
+    const { addToast } = useToast();
     const {
         type,
         title,
@@ -40,22 +42,51 @@ export function NewTransactionItemModal() {
         event.preventDefault();
 
         if (itemId) {
+            await update();
+            return;
+        }
+
+        await create();
+    }
+
+    async function create() {
+        try {
+            await createTransactionItem(id, {
+                title,
+                value,
+                type
+            });
+
+            addToast({ type: 'success', title: 'Successo', description: 'Cadastrado com sucesso' });
+
+            handleCloseNewTransactionItemModal();
+        } catch (error) {
+            addToast({
+                type: 'error',
+                title: 'Erro ao cadastrar',
+                description: error.response.data.error
+            });
+        }
+    }
+
+    async function update() {
+        try {
             await updateTransactionItem(id, itemId, {
                 title,
                 value,
                 type
             });
 
-            handleCloseNewTransactionItemModal();
-            return;
-        }
+            addToast({ type: 'success', title: 'Successo', description: 'Editado com sucesso' });
 
-        await createTransactionItem(id, {
-            title,
-            value,
-            type
-        });
-        handleCloseNewTransactionItemModal();
+            handleCloseNewTransactionItemModal();
+        } catch (error) {
+            addToast({
+                type: 'error',
+                title: 'Erro ao editar',
+                description: error.response.data.error
+            });
+        }
     }
 
     return (
@@ -82,6 +113,7 @@ export function NewTransactionItemModal() {
                         <CCol xs="12" md="12">
                             <CLabel>Valor</CLabel>
                             <CInput
+                                defaultValue={0}
                                 type="text"
                                 placeholder="Valor"
                                 value={value}
