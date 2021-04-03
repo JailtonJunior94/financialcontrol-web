@@ -18,48 +18,35 @@ import { Params } from '../../models/params';
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
 import { useToast } from '../../hooks/toast';
-import { useTransaction } from '../../hooks/transaction';
 import { TransactionTypeContainer, RadioBox } from './styles';
+import { useTransactionItem } from '../../hooks/transactionItem';
+import { CurrencyInput } from '../CurrencyInput';
 
 export function NewTransactionItemModal() {
     const { id } = useParams<Params>();
     const { addToast } = useToast();
     const {
-        type,
-        title,
-        value,
-        itemId,
+        transactionItemId,
+        transactionItemInput,
         isNewTransactionItemModalOpen,
-        handleType,
-        handleTitle,
-        handleValue,
+        handleChange,
+        handleRadioClick,
+        handleCurrencyChange,
         createTransactionItem,
         updateTransactionItem,
         handleCloseNewTransactionItemModal
-    } = useTransaction();
+    } = useTransactionItem();
 
     async function handleCreateNewTransactionItem(event: FormEvent) {
         event.preventDefault();
-
-        if (itemId) {
-            await update();
-            return;
-        }
-
-        await create();
+        transactionItemId ? await update() : await create();
+        handleCloseNewTransactionItemModal();
     }
 
     async function create() {
         try {
-            await createTransactionItem(id, {
-                title,
-                value,
-                type
-            });
-
+            await createTransactionItem(id, transactionItemInput);
             addToast({ type: 'success', title: 'Successo', description: 'Cadastrado com sucesso' });
-
-            handleCloseNewTransactionItemModal();
         } catch (error) {
             addToast({
                 type: 'error',
@@ -71,15 +58,8 @@ export function NewTransactionItemModal() {
 
     async function update() {
         try {
-            await updateTransactionItem(id, itemId, {
-                title,
-                value,
-                type
-            });
-
+            await updateTransactionItem(id, transactionItemId, transactionItemInput);
             addToast({ type: 'success', title: 'Successo', description: 'Editado com sucesso' });
-
-            handleCloseNewTransactionItemModal();
         } catch (error) {
             addToast({
                 type: 'error',
@@ -104,20 +84,18 @@ export function NewTransactionItemModal() {
                             <CInput
                                 type="text"
                                 placeholder="Título"
-                                value={title}
-                                onChange={handleTitle}
+                                name="title"
+                                value={transactionItemInput.title ?? ''}
+                                onChange={handleChange}
                             />
                         </CCol>
                     </CFormGroup>
                     <CFormGroup row>
                         <CCol xs="12" md="12">
                             <CLabel>Valor</CLabel>
-                            <CInput
-                                defaultValue={0}
-                                type="text"
-                                placeholder="Valor"
-                                value={value}
-                                onChange={handleValue}
+                            <CurrencyInput
+                                value={transactionItemInput.value}
+                                handleCurrencyChange={handleCurrencyChange}
                             />
                         </CCol>
                     </CFormGroup>
@@ -125,19 +103,23 @@ export function NewTransactionItemModal() {
                         <CCol xs="12" md="12">
                             <TransactionTypeContainer>
                                 <RadioBox
+                                    name="type"
                                     type="button"
-                                    onClick={() => handleType('INCOME')}
-                                    isActive={type === 'INCOME'}
                                     activeColor="green"
+                                    isActive={transactionItemInput.type === 'INCOME'}
+                                    value={transactionItemInput.type ?? 'INCOME'}
+                                    onClick={() => handleRadioClick('INCOME')}
                                 >
                                     <img src={incomeImg} alt="Entrada" />
                                     <span>Entrada</span>
                                 </RadioBox>
                                 <RadioBox
+                                    name="type"
                                     type="button"
-                                    onClick={() => handleType('OUTCOME')}
-                                    isActive={type === 'OUTCOME'}
                                     activeColor="red"
+                                    isActive={transactionItemInput.type === 'OUTCOME'}
+                                    value={transactionItemInput.type ?? 'OUTCOME'}
+                                    onClick={() => handleRadioClick('OUTCOME')}
                                 >
                                     <img src={outcomeImg} alt="Saída" />
                                     <span>Saída</span>

@@ -8,3 +8,7 @@ export function formatMoney(val: number): string {
 export function formatDate(val: Date): string {
     return new Intl.DateTimeFormat('pt-BR').format(new Date(val))
 }
+
+export function formatDateA(val: Date): string {
+    return new Intl.DateTimeFormat('pt-BR', { year: '2-digit', month: 'numeric' }).format(new Date(val))
+}

@@ -18,8 +18,8 @@ import { useToast } from '../../hooks/toast';
 
 export function NewTransactionModal() {
     const { addToast } = useToast();
-    const { isNewTransactionModalOpen, handleCloseNewTransactionModal, createTransaction } = useTransaction();
     const [date, setDate] = useState('');
+    const { isNewTransactionModalOpen, handleCloseNewTransactionModal, createTransaction } = useTransaction();
 
     function handleDate(e: React.ChangeEvent<HTMLInputElement>) {
         setDate(e.target.value)

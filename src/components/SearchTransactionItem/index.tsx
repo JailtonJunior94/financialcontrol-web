@@ -11,10 +11,10 @@ import {
     CInput
 } from '@coreui/react';
 
-import { useTransaction } from '../../hooks/transaction';
+import { useTransactionItem } from '../../hooks/transactionItem';
 
 export function SearchTransactionItem() {
-    const { handleOpenNewTransactionItemModal } = useTransaction();
+    const { handleOpenNewTransactionItemModal } = useTransactionItem();
     return (
         <CRow>
             <CCol xs="12" sm="12" md="12">

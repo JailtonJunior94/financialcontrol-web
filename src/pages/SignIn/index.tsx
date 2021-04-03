@@ -23,11 +23,17 @@ import { SignInInput, useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
 export function SignIn() {
+    const [input, setInput] = useState<SignInInput>({} as SignInInput);
     const history = useHistory();
     const { signIn } = useAuth();
     const { addToast } = useToast();
 
-    const [input, setInput] = useState<SignInInput>({} as SignInInput);
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setInput({
+            ...input,
+            [e.target.name]: e.target.value,
+        });
+    }
 
     async function handleSignIn(event: FormEvent) {
         try {
@@ -45,13 +51,6 @@ export function SignIn() {
                 description: error.response.data.error
             });
         }
-    }
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setInput({
-            ...input,
-            [e.target.name]: e.target.value,
-        });
     }
 
     return (

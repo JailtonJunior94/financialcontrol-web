@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { CSpinner, CAlert } from '@coreui/react'
+import { CSpinner, CAlert } from '@coreui/react';
 
+import { Params } from '../../models/params';
 import { Layout } from '../../components/Layout';
+import { useTransactionItem } from '../../hooks/transactionItem';
 import { TransactionItemsTable } from '../../components/TransactionItemsTable';
 import { SearchTransactionItem } from '../../components/SearchTransactionItem';
 import { NewTransactionItemModal } from '../../components/NewTransactionItemModal';
-import { Params } from '../../models/params';
-import { useTransaction } from '../../hooks/transaction';
 
 export function TransactionItems() {
     const { id } = useParams<Params>();
     const [isLoading, setIsLoading] = useState(true);
-    const { transactionItems, loadTransactionItems } = useTransaction();
+    const { transactionItems, loadTransactionItems } = useTransactionItem();
 
     useEffect(() => {
         loadTransactionItems(id);

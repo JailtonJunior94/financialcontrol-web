@@ -11,18 +11,25 @@ import {
 import { api } from '../../services/api';
 import { Layout } from '../../components/Layout';
 import { Transaction } from '../../models/transactions';
-import { formatMoney } from '../../utils/formats';
+import { formatDateA, formatMoney } from '../../utils/formats';
 
 export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState<Transaction[]>([])
+    const labels = transactions.map(j => formatDateA(j.date));
+
+    async function loadTransactions() {
+        const response = await api.get<Transaction[]>('api/v1/transactions');
+        setTransactions(response.data);
+        setIsLoading(false);
+    }
 
     useEffect(() => {
-        api.get<Transaction[]>('api/v1/transactions')
-            .then(response => {
-                setTransactions(response.data);
-                setIsLoading(false);
-            });
+        loadTransactions();
+        return () => {
+            setTransactions([]);
+            setIsLoading(false);
+        }
     }, [])
 
     return (
@@ -55,20 +62,7 @@ export function Dashboard() {
                                     data: transactions.map(t => t.outcome)
                                 }
                             ]}
-                            labels={[
-                                "Jan/2021",
-                                "Fev/2021",
-                                "Mar/2021",
-                                "Abr/2021",
-                                "Mai/2021",
-                                "Jun/2021",
-                                "Jul/2021",
-                                "Ago/2021",
-                                "Set/2021",
-                                "Out/2021",
-                                "Nov/2021",
-                                "Dez/2021"
-                            ]}
+                            labels={labels}
                             options={{
                                 tooltips: {
                                     enabled: true,
@@ -101,9 +95,14 @@ export function Dashboard() {
                                     data: transactions.map(t => t.outcome)
                                 }
                             ]}
-                            labels="months"
+                            labels={labels}
                             options={{
-                                tooltips: { enabled: true }
+                                tooltips: {
+                                    enabled: true,
+                                    callbacks: {
+                                        label: (t: any) => formatMoney(t.yLabel)
+                                    },
+                                }
                             }}
                         />
                     </CCardBody>

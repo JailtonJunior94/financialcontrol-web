@@ -9,7 +9,7 @@ import {
 import { Item } from './styles';
 import { formatMoney } from '../../utils/formats';
 import { TransactionItem } from '../../models/transactions';
-import { useTransaction } from '../../hooks/transaction';
+import { useTransactionItem } from '../../hooks/transactionItem';
 
 interface TransactionItemsTableProps {
     transactionsItems: TransactionItem[]
@@ -24,8 +24,7 @@ interface ItemsTable {
 }
 
 export function TransactionItemsTable({ transactionsItems }: TransactionItemsTableProps) {
-    const { handleOpenEditTransactionItemModal } = useTransaction();
-
+    const { handleOpenEditTransactionItemModal } = useTransactionItem();
     const fields = ['titulo', 'valor']
 
     const items = transactionsItems.map(item => {
