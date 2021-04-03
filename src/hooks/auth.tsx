@@ -7,7 +7,7 @@ interface AuthState {
     token: string;
 }
 
-interface SignInInput {
+export interface SignInInput {
     email: string;
     password: string;
 }

@@ -11,6 +11,7 @@ import {
 import { api } from '../../services/api';
 import { Layout } from '../../components/Layout';
 import { Transaction } from '../../models/transactions';
+import { formatMoney } from '../../utils/formats';
 
 export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
@@ -69,7 +70,12 @@ export function Dashboard() {
                                 "Dez/2021"
                             ]}
                             options={{
-                                tooltips: { enabled: true }
+                                tooltips: {
+                                    enabled: true,
+                                    callbacks: {
+                                        label: (t: any) => formatMoney(t.yLabel)
+                                    },
+                                }
                             }}
                         />
                     </CCardBody>

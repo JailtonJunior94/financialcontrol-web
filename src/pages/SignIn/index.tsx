@@ -19,26 +19,23 @@ import CIcon from '@coreui/icons-react';
 import { freeSet } from '@coreui/icons';
 
 import { Logo } from './styles';
-import { useAuth } from '../../hooks/auth';
+import { SignInInput, useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
 export function SignIn() {
     const history = useHistory();
-
     const { signIn } = useAuth();
     const { addToast } = useToast();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
+    const [input, setInput] = useState<SignInInput>({} as SignInInput);
 
     async function handleSignIn(event: FormEvent) {
         try {
             event.preventDefault();
 
-            await signIn({ email, password });
+            await signIn(input);
 
-            setEmail('');
-            setPassword('');
+            setInput({} as SignInInput)
 
             history.push('/dashboard');
         } catch (error) {
@@ -50,12 +47,11 @@ export function SignIn() {
         }
     }
 
-    function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {
-        setEmail(e.target.value)
-    }
-
-    function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {
-        setPassword(e.target.value)
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setInput({
+            ...input,
+            [e.target.name]: e.target.value,
+        });
     }
 
     return (
@@ -78,10 +74,10 @@ export function SignIn() {
                                             </CInputGroupPrepend>
                                             <CInput
                                                 type="text"
+                                                name="email"
                                                 placeholder="E-mail"
-                                                autoComplete="email"
-                                                value={email}
-                                                onChange={handleEmail}
+                                                onChange={handleChange}
+                                                defaultValue={input.email}
                                             />
                                         </CInputGroup>
                                         <CInputGroup className="mb-4">
@@ -92,10 +88,10 @@ export function SignIn() {
                                             </CInputGroupPrepend>
                                             <CInput
                                                 type="password"
+                                                name="password"
                                                 placeholder="Senha"
-                                                autoComplete="password"
-                                                value={password}
-                                                onChange={handlePassword}
+                                                onChange={handleChange}
+                                                defaultValue={input.password}
                                             />
                                         </CInputGroup>
                                         <CRow>
