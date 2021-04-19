@@ -11,6 +11,12 @@ const navigation = [
         to: '/transacoes',
         fontIcon: 'fas fa-money-bill-alt'
     },
+    {
+        _tag: 'CSidebarNavItem',
+        name: 'Contas',
+        to: '/contas',
+        fontIcon: 'fas fa-dollar-sign'
+    },
     // {
     //     _tag: 'CSidebarNavItem',
     //     name: 'Cartões',

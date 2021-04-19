@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { AuthProvider } from './auth';
+import { BillsProvider } from './bill';
+import { BillItemProvider } from './billItem';
 import { ToastProvider } from './toast';
 import { TransactionsProvider } from './transaction';
 import { TransactionItemProvider } from './transactionItem';
@@ -11,7 +13,11 @@ const AppProvider: React.FC = ({ children }) => {
             <ToastProvider>
                 <TransactionsProvider>
                     <TransactionItemProvider>
-                        {children}
+                        <BillsProvider>
+                            <BillItemProvider>
+                                {children}
+                            </BillItemProvider>
+                        </BillsProvider>
                     </TransactionItemProvider>
                 </TransactionsProvider>
             </ToastProvider>
