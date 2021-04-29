@@ -2,6 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { api } from '../services/api';
 import { Card, Flag } from '../models/cards';
+import { SelectInput } from '../models/selectInput';
 
 interface CardsProviderProps {
     children: ReactNode;
@@ -14,11 +15,6 @@ interface NewCardInput {
     description: string;
     closingDay: number;
     expirationDate: Date;
-}
-
-interface SelectInput {
-    value: string | ''
-    name: string | ''
 }
 
 interface CardsContextData {

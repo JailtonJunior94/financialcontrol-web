@@ -19,7 +19,7 @@ import { useInvoice } from '../../hooks/invoices';
 export function SearchInvoices() {
     const { cards } = useCard()
     const { addToast } = useToast()
-    const { handleCloseNewInvoiceModal, loadInvoices, handleIsLoading } = useInvoice();
+    const { loadInvoices, handleIsLoading, handleOpenNewInvoiceModal } = useInvoice();
     const [cardId, setCardId] = useState('')
 
     function handleSelect(e: any) {
@@ -66,7 +66,7 @@ export function SearchInvoices() {
                         <CRow className="d-flex justify-content-end">
                             <CCol xs="2" sm="2" md="2">
                                 <CButton
-                                    onClick={handleCloseNewInvoiceModal}
+                                    onClick={handleOpenNewInvoiceModal}
                                     className='btn-square'
                                     type='button'
                                     color="info" block><i className='fa fa-plus'></i> Novo

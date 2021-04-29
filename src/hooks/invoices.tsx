@@ -1,7 +1,8 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { api } from '../services/api';
-import { Invoice, InvoiceItem } from '../models/invoices';
+import { SelectInput } from '../models/selectInput';
+import { Category, Invoice, InvoiceItem } from '../models/invoices';
 
 interface InvoicesProviderProps {
     children: ReactNode;
@@ -18,25 +19,33 @@ interface NewInvoiceInput {
 }
 
 interface InvoicesContextData {
-    invoices: Invoice[];
-    invoiceItems: InvoiceItem[];
     isLoading: boolean;
+    invoices: Invoice[];
+    categories: Category[];
+    invoiceItems: InvoiceItem[];
+    invoiceInput: NewInvoiceInput;
     isNewInvoiceModalOpen: boolean;
-    handleIsLoading: (loading: boolean) => void;
+    loadCategories: () => Promise<void>;
     handleOpenNewInvoiceModal: () => void;
     handleCloseNewInvoiceModal: () => void;
+    handleSelect: (e: SelectInput) => void;
+    handleIsLoading: (loading: boolean) => void;
     loadInvoices: (cardId: string) => Promise<void>;
-    loadInvoiceItems: (cardId: string, invoiceId: string) => Promise<void>;
     createInvoice: (input: NewInvoiceInput) => Promise<void>;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    loadInvoiceItems: (cardId: string, invoiceId: string) => Promise<void>;
+    handleCurrencyChange: (event: React.ChangeEvent<HTMLInputElement>, value: number, maskedValue: string) => void;
 }
 
 const InvoicesContext = createContext<InvoicesContextData>({} as InvoicesContextData);
 
 export function InvoicesProvider({ children }: InvoicesProviderProps) {
+    const [categories, setCategories] = useState<Category[]>([]);
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isNewInvoiceModalOpen, setIsNewInvoiceModalOpen] = useState(false);
+    const [invoiceInput, setInvoiceInput] = useState<NewInvoiceInput>({} as NewInvoiceInput);
 
     function handleOpenNewInvoiceModal() {
         setIsNewInvoiceModalOpen(true);
@@ -44,10 +53,24 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
 
     function handleCloseNewInvoiceModal() {
         setIsNewInvoiceModalOpen(false);
+        setInvoiceInput({
+            cardId: '',
+            categoryId: '',
+            purchaseDate: new Date(),
+            totalAmount: 0,
+            quantityInvoice: 0,
+            description: '',
+            tags: ''
+        });
     }
 
     function handleIsLoading(loading: boolean) {
         setIsLoading(loading)
+    }
+
+    async function loadCategories(): Promise<void> {
+        const response = await api.get<Category[]>('api/v1/categories');
+        setCategories(response.data);
     }
 
     async function loadInvoices(cardId: string): Promise<void> {
@@ -61,20 +84,47 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
     }
 
     async function createInvoice(input: NewInvoiceInput): Promise<void> {
-        const response = await api.post<Invoice>(`api/v1/cards/${input.cardId}/invoices`, input);
-        setInvoices([...invoices, response.data]);
+        await api.post<Invoice>(`api/v1/cards/${input.cardId}/invoices`, input);
+        await loadInvoices(input.cardId);
     }
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setInvoiceInput({
+            ...invoiceInput,
+            [e.target.name]: e.target.value,
+        });
+    }
+
+    function handleSelect(e: SelectInput) {
+        setInvoiceInput({
+            ...invoiceInput,
+            [e.name]: e.value,
+        });
+    }
+
+    function handleCurrencyChange(event: React.ChangeEvent<HTMLInputElement>, value: number, maskedValue: string) {
+        setInvoiceInput({
+            ...invoiceInput,
+            totalAmount: value,
+        });
+    };
 
     return (
         <InvoicesContext.Provider value={{
             invoices,
-            invoiceItems,
             isLoading,
+            categories,
+            invoiceInput,
+            invoiceItems,
             isNewInvoiceModalOpen,
             loadInvoices,
+            loadCategories,
             loadInvoiceItems,
             createInvoice,
             handleIsLoading,
+            handleChange,
+            handleSelect,
+            handleCurrencyChange,
             handleOpenNewInvoiceModal,
             handleCloseNewInvoiceModal
         }}>
