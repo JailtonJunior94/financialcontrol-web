@@ -3,6 +3,7 @@ import React from 'react';
 import { AuthProvider } from './auth';
 import { BillsProvider } from './bill';
 import { BillItemProvider } from './billItem';
+import { CardsProvider } from './card';
 import { ToastProvider } from './toast';
 import { TransactionsProvider } from './transaction';
 import { TransactionItemProvider } from './transactionItem';
@@ -15,7 +16,9 @@ const AppProvider: React.FC = ({ children }) => {
                     <TransactionItemProvider>
                         <BillsProvider>
                             <BillItemProvider>
-                                {children}
+                                <CardsProvider>
+                                    {children}
+                                </CardsProvider>
                             </BillItemProvider>
                         </BillsProvider>
                     </TransactionItemProvider>
