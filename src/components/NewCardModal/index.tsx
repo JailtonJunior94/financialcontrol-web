@@ -12,7 +12,7 @@ import {
     CForm
 } from '@coreui/react';
 import { FormEvent } from 'react';
-import Select from 'react-select'
+import Select from 'react-select';
 
 import { useCard } from '../../hooks/card';
 import { useToast } from '../../hooks/toast';
@@ -127,7 +127,6 @@ export function NewCardModal() {
                                 type="date"
                                 name="expirationDate"
                                 placeholder="Data de Expiração..."
-                                // value={cardInput.expirationDate}
                                 onChange={handleChange}
                             />
                         </CCol>
