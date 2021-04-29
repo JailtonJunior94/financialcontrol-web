@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: 'https://financialcontrol-api.herokuapp.com',
 });
 
 api.interceptors.response.use((response) => {
