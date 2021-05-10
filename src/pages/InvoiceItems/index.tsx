@@ -8,12 +8,12 @@ import {
 import CIcon from '@coreui/icons-react';
 import { freeSet } from '@coreui/icons';
 
+import { useCard } from '../../hooks/card';
 import { Params } from '../../models/params';
+import { Layout } from '../../components/Layout';
 import { useInvoice } from '../../hooks/invoices';
 import { formatDate, formatMoney } from '../../utils/formats';
 import { InvoiceItemsTable } from '../../components/InvoiceItemsTable';
-import { Layout } from '../../components/Layout';
-import { useCard } from '../../hooks/card';
 
 export function InvoiceItems() {
     const { cards } = useCard();
@@ -29,6 +29,10 @@ export function InvoiceItems() {
     }, [])
 
     const card = cards.find(j => j.id === cardId);
+    const sumTags = invoiceItems
+        .filter(j => j.tags === 'Stefany')
+        .reduce((a, i) => a + i.installmentValue, 0)
+
     return (
         <Layout>
             <CRow>
@@ -36,7 +40,7 @@ export function InvoiceItems() {
                     <CWidgetProgressIcon
                         header={card?.name}
                         text={card?.description}
-                        color="gradient-danger"
+                        color="gradient-primary"
                         inverse
                     >
                         <CIcon content={freeSet.cilCreditCard} />
@@ -46,7 +50,7 @@ export function InvoiceItems() {
                     <CWidgetProgressIcon
                         header={formatMoney(invoices.find(x => x.id === id)?.total ?? 0)}
                         text="Total da fatura"
-                        color="gradient-primary"
+                        color="gradient-danger"
                         inverse
                     >
                         <CIcon content={freeSet.cilMoney} />
@@ -64,8 +68,8 @@ export function InvoiceItems() {
                 </CCol>
                 <CCol xs="3" sm="3" lg="3">
                     <CWidgetProgressIcon
-                        header={invoiceItems.length.toString()}
-                        text="Total de itens"
+                        header={formatMoney(sumTags)}
+                        text="Total em Tags (Stefany)"
                         color="gradient-success"
                         inverse
                     >
