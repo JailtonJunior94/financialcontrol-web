@@ -12,17 +12,20 @@ interface NewBillInput {
 }
 
 interface BillsContextData {
+    bill: Bill;
     bills: Bill[];
     isNewBillModalOpen: boolean;
     handleOpenNewBillModal: () => void;
     handleCloseNewBillModal: () => void;
     loadBills: () => Promise<void>;
+    loadBillById: (id: string) => Promise<void>;
     createBill: (input: NewBillInput) => Promise<void>;
 }
 
 const BillsContext = createContext<BillsContextData>({} as BillsContextData);
 
 export function BillsProvider({ children }: BillsProviderProps) {
+    const [bill, setBill] = useState<Bill>({} as Bill);
     const [bills, setBills] = useState<Bill[]>([]);
     const [isNewBillModalOpen, setIsNewBillModalOpen] = useState(false);
 
@@ -39,6 +42,11 @@ export function BillsProvider({ children }: BillsProviderProps) {
         setBills(response.data);
     }
 
+    async function loadBillById(id: string): Promise<void> {
+        const response = await api.get<Bill>(`api/v1/bills/${id}`);
+        setBill(response.data);
+    }
+
     async function createBill(input: NewBillInput): Promise<void> {
         const response = await api.post<Bill>('api/v1/bills', input);
         setBills([...bills, response.data]);
@@ -46,10 +54,12 @@ export function BillsProvider({ children }: BillsProviderProps) {
 
     return (
         <BillsContext.Provider value={{
+            bill,
             bills,
             isNewBillModalOpen,
             loadBills,
             createBill,
+            loadBillById,
             handleOpenNewBillModal,
             handleCloseNewBillModal
         }}>

@@ -24,7 +24,7 @@ export function BillItems() {
         <Layout>
             <SearchBillItem />
             {billItems.length !== 0 && (
-                <BillItemsTable billItems={billItems} />
+                <BillItemsTable billId={id} billItems={billItems} />
             )}
             {billItems.length === 0 && (
                 <CAlert color="warning" closeButton>Nenhum item encontrado!</CAlert>

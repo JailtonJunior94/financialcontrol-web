@@ -24,7 +24,7 @@ export function TransactionItems() {
         <Layout>
             <SearchTransactionItem />
             {transactionItems.length !== 0 && (
-                <TransactionItemsTable transactionsItems={transactionItems} />
+                <TransactionItemsTable transactionId={id} transactionsItems={transactionItems} />
             )}
             {transactionItems.length === 0 && (
                 <CAlert color="warning" closeButton>Nenhum item encontrado!</CAlert>
