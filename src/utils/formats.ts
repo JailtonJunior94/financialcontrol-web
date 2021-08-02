@@ -12,3 +12,8 @@ export function formatDate(val: Date): string {
 export function formatDateA(val: Date): string {
     return new Intl.DateTimeFormat('pt-BR', { year: '2-digit', month: 'numeric' }).format(new Date(val))
 }
+
+export function monthName(val: Date): string {
+    const monthName = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(new Date(val))
+    return `${monthName.charAt(0).toUpperCase()}${monthName.substring(1)}`;
+}
