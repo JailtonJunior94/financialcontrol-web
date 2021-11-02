@@ -13,5 +13,6 @@ export interface TransactionItem {
     title: string;
     value: number;
     type: string;
+    isPaid?: boolean;
     active: boolean;
 }

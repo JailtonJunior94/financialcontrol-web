@@ -77,7 +77,7 @@ export function NewTransactionModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>
+                    </CButton>
                 </CModalFooter>
             </CForm>
         </CModal>

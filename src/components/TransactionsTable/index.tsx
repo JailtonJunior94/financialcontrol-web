@@ -3,7 +3,8 @@ import {
     CCardBody,
     CCol,
     CDataTable,
-    CRow
+    CRow,
+    CButton
 } from '@coreui/react';
 import { useHistory } from 'react-router';
 
@@ -24,7 +25,7 @@ interface TransactionsTableProps {
 
 export function TransactionsTable({ transactions }: TransactionsTableProps) {
     const history = useHistory();
-    const fields = ['data', 'entrada', 'saida', 'total']
+    const fields = ['data', 'entrada', 'saida', 'total', 'detalhes', 'clone']
 
     const items = transactions.map(transaction => {
         return {
@@ -33,6 +34,8 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
             entrada: formatMoney(transaction.income),
             saida: formatMoney(transaction.outcome),
             total: formatMoney(transaction.total),
+            detalhe: transaction.id,
+            clone: transaction.id
         }
     })
 
@@ -42,7 +45,6 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
                 <CCard>
                     <CCardBody>
                         <CDataTable
-                            clickableRows
                             hover
                             responsive
                             striped
@@ -50,8 +52,31 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
                             items={items}
                             fields={fields}
                             itemsPerPage={12}
-                            onRowClick={(item: ItemsTable) => {
-                                history.push(`/transacoes/${item.id}`)
+                            scopedSlots={{
+                                'detalhes': (item: ItemsTable) => {
+                                    return (
+                                        <td className="py-2">
+                                            <CButton
+                                                onClick={() => history.push(`/transacoes/${item.id}`)}
+                                                className='btn btn-ghost-success'
+                                                type='button'
+                                                block><i className='fa fa-bars'></i>
+                                            </CButton>
+                                        </td>
+                                    )
+                                },
+                                'clone': (item: ItemsTable) => {
+                                    return (
+                                        <td className="py-2">
+                                            <CButton
+                                                onClick={() => history.push(`/transacoes/${item.id}`)}
+                                                className='btn btn-ghost-dark'
+                                                type='button'
+                                                block><i className='fa fa-clone'></i>
+                                            </CButton>
+                                        </td>
+                                    )
+                                }
                             }}
                         />
                     </CCardBody>

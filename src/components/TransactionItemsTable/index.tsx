@@ -5,7 +5,9 @@ import {
     CCol,
     CDataTable,
     CRow,
-    CWidgetProgressIcon
+    CWidgetProgressIcon,
+    CSwitch,
+    CButton
 } from '@coreui/react';
 import { freeSet } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
@@ -27,12 +29,13 @@ interface ItemsTable {
     value: number;
     titulo: string;
     valor: string;
+    isPaid: boolean;
 }
 
 export function TransactionItemsTable({ transactionId, transactionsItems }: TransactionItemsTableProps) {
     const { transaction, loadTransactionById } = useTransaction();
     const { handleOpenEditTransactionItemModal } = useTransactionItem();
-    const fields = ['titulo', 'valor']
+    const fields = ['titulo', 'valor', 'editar', 'pago?']
 
     const items = transactionsItems.map(item => {
         return {
@@ -47,7 +50,7 @@ export function TransactionItemsTable({ transactionId, transactionsItems }: Tran
     useEffect(() => {
         loadTransactionById(transactionId)
     })
-
+    
     return (
         <>
             <CRow>
@@ -97,7 +100,6 @@ export function TransactionItemsTable({ transactionId, transactionsItems }: Tran
                     <CCard>
                         <CCardBody>
                             <CDataTable
-                                clickableRows
                                 hover
                                 responsive
                                 striped
@@ -110,14 +112,31 @@ export function TransactionItemsTable({ transactionId, transactionsItems }: Tran
                                         <Item className={item.type}>
                                             {item.type === "OUTCOME" ? '-' : ''} {item.valor}
                                         </Item>
-                                    )
-                                }}
-                                onRowClick={(item: ItemsTable) => {
-                                    handleOpenEditTransactionItemModal(item.id, {
-                                        type: item.type,
-                                        title: item.titulo,
-                                        value: item.value
-                                    });
+                                    ),
+                                    'editar': (item: ItemsTable) => (
+                                        <td className="py-2">
+                                            <CButton
+                                                onClick={() => handleOpenEditTransactionItemModal(item.id, {
+                                                    type: item.type,
+                                                    title: item.titulo,
+                                                    value: item.value,
+                                                })}
+                                                className='btn btn-ghost-dark'
+                                                type='button'
+                                                block><i className='fa fa-edit'></i>
+                                            </CButton>
+                                        </td>
+                                    ),
+                                    'pago?': (item: ItemsTable) => (
+                                        <td className="py-2">
+                                            <CSwitch 
+                                                color={'primary'}
+                                              
+                                                checked={item.isPaid}
+                                                onClick={() => { alert('aqui') }}
+                                            />
+                                        </td>
+                                    ),
                                 }}
                             />
                         </CCardBody>
