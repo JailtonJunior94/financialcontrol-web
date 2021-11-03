@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-// export const api = axios.create({
-//     baseURL: 'https://financialcontrol-api.herokuapp.com',
-// });
-
 export const api = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: 'https://financialcontrol-api.herokuapp.com',
 });
+
+// export const api = axios.create({
+//     baseURL: 'http://localhost:4000',
+// });
 
 api.interceptors.response.use((response) => {
     return response;
