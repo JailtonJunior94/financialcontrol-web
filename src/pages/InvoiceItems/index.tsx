@@ -14,24 +14,21 @@ import { Layout } from '../../components/Layout';
 import { useInvoice } from '../../hooks/invoices';
 import { formatDate, formatMoney } from '../../utils/formats';
 import { InvoiceItemsTable } from '../../components/InvoiceItemsTable';
+import { Card } from '../../models/cards';
 
 export function InvoiceItems() {
     const { cards } = useCard();
     const { id } = useParams<Params>();
-    const [cardId, setCardId] = useState('')
+    const [card, setCard] = useState<Card>({} as Card)
     const { invoices, invoiceItems, loadInvoiceItems } = useInvoice();
 
     useEffect(() => {
         const cardId: string = invoices.find(j => j.id === id)?.cardId ?? '';
-        setCardId(cardId);
         loadInvoiceItems(cardId, id)
+
+        setCard(cards.find(j => j.id === cardId) ?? {} as Card)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    const card = cards.find(j => j.id === cardId);
-    const sumTags = invoiceItems
-        .filter(j => j.tags === 'Stefany')
-        .reduce((a, i) => a + i.installmentValue, 0)
 
     return (
         <Layout>
@@ -68,8 +65,8 @@ export function InvoiceItems() {
                 </CCol>
                 <CCol xs="3" sm="3" lg="3">
                     <CWidgetProgressIcon
-                        header={formatMoney(sumTags)}
-                        text="Total em Tags (Stefany)"
+                        header={`Dia para comprar: ${card?.bestDayToBuy}`}
+                        text="Melhor dia para compras"
                         color="gradient-success"
                         inverse
                     >

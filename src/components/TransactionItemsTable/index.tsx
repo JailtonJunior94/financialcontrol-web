@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
     CCard,
     CCardBody,
@@ -14,12 +13,12 @@ import CIcon from '@coreui/icons-react';
 
 import { Item } from './styles';
 import { formatMoney, formatDate } from '../../utils/formats';
-import { TransactionItem } from '../../models/transactions';
-import { useTransaction } from '../../hooks/transaction';
 import { useTransactionItem } from '../../hooks/transactionItem';
+import { Transaction, TransactionItem } from '../../models/transactions';
+import { useTransaction } from '../../hooks/transaction';
 
 interface TransactionItemsTableProps {
-    transactionId: string;
+    transaction: Transaction;
     transactionsItems: TransactionItem[]
 }
 
@@ -32,10 +31,10 @@ interface ItemsTable {
     isPaid: boolean;
 }
 
-export function TransactionItemsTable({ transactionId, transactionsItems }: TransactionItemsTableProps) {
-    const { transaction, loadTransactionById } = useTransaction();
+export function TransactionItemsTable({ transaction, transactionsItems }: TransactionItemsTableProps) {
+    const { removeTransactionItem, markAsPaidTransactionItem } = useTransaction();
     const { handleOpenEditTransactionItemModal } = useTransactionItem();
-    const fields = ['titulo', 'valor', 'editar', 'pago?']
+    const fields = ['titulo', 'valor', 'editar', 'deletar', 'pago?']
 
     const items = transactionsItems.map(item => {
         return {
@@ -43,14 +42,11 @@ export function TransactionItemsTable({ transactionId, transactionsItems }: Tran
             type: item.type,
             value: item.value,
             titulo: item.title,
+            isPaid: item.isPaid,
             valor: formatMoney(item.value),
         }
     })
 
-    useEffect(() => {
-        loadTransactionById(transactionId)
-    })
-    
     return (
         <>
             <CRow>
@@ -127,13 +123,22 @@ export function TransactionItemsTable({ transactionId, transactionsItems }: Tran
                                             </CButton>
                                         </td>
                                     ),
+                                    'deletar': (item: ItemsTable) => (
+                                        <td className="py-2">
+                                            <CButton
+                                                onClick={() => removeTransactionItem(transaction.id, item.id)}
+                                                className='btn btn-ghost-danger'
+                                                type='button'
+                                                block><i className='fa fa-trash'></i>
+                                            </CButton>
+                                        </td>
+                                    ),
                                     'pago?': (item: ItemsTable) => (
                                         <td className="py-2">
-                                            <CSwitch 
-                                                color={'primary'}
-                                              
+                                            <CSwitch
+                                                color={'success'}
                                                 checked={item.isPaid}
-                                                onClick={() => { alert('aqui') }}
+                                                onClick={() => { markAsPaidTransactionItem(transaction.id, item.id, !item.isPaid) }}
                                             />
                                         </td>
                                     ),

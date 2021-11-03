@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
 
-import { api } from '../services/api';
-import { Transaction, TransactionItem } from '../models/transactions';
+import { TransactionItem } from '../models/transactions';
 
 interface TransactionItemProviderProps {
     children: ReactNode;
@@ -11,17 +10,13 @@ type NewTransactionItemInput = Omit<TransactionItem, 'id' | 'active'>;
 
 interface TransactionItemContextData {
     transactionItemId: string;
-    transactionItems: TransactionItem[];
     transactionItemInput: NewTransactionItemInput;
     isNewTransactionItemModalOpen: boolean;
-    loadTransactionItems: (id: string) => Promise<void>;
     handleOpenNewTransactionItemModal: () => void;
     handleOpenEditTransactionItemModal: (id: string, input: NewTransactionItemInput) => void;
     handleCloseNewTransactionItemModal: () => void;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleRadioClick: (type: string) => void;
-    createTransactionItem(transactionId: string, input: NewTransactionItemInput): Promise<void>;
-    updateTransactionItem(transactionId: string, id: string, input: NewTransactionItemInput): Promise<void>;
     handleCurrencyChange: (event: React.ChangeEvent<HTMLInputElement>, value: number, maskedValue: string) => void;
 }
 
@@ -29,25 +24,8 @@ const TransactionItemContext = createContext<TransactionItemContextData>({} as T
 
 export function TransactionItemProvider({ children }: TransactionItemProviderProps) {
     const [transactionItemId, setTransactionItemId] = useState('');
-    const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([]);
     const [isNewTransactionItemModalOpen, setIsNewTransactionItemModalOpen] = useState(false);
     const [transactionItemInput, setTransactionItemInput] = useState<NewTransactionItemInput>({} as NewTransactionItemInput);
-
-    async function loadTransactionItems(id: string): Promise<void> {
-        const response = await api.get<Transaction>(`api/v1/transactions/${id}`);
-        setTransactionItems(response.data.items ?? []);
-    }
-
-    async function createTransactionItem(transactionId: string, input: NewTransactionItemInput): Promise<void> {
-        const response = await api.post<TransactionItem>(`api/v1/transactions/${transactionId}`, input);
-        setTransactionItems([...transactionItems, response.data]);
-    }
-
-    async function updateTransactionItem(transactionId: string, id: string, input: NewTransactionItemInput): Promise<void> {
-        await api.put<TransactionItem>(`api/v1/transactions/${transactionId}/items/${id}`, input);
-        const response = await api.get<Transaction>(`api/v1/transactions/${transactionId}`);
-        setTransactionItems(response.data.items ?? []);
-    }
 
     function handleOpenNewTransactionItemModal() {
         setIsNewTransactionItemModalOpen(true);
@@ -89,18 +67,14 @@ export function TransactionItemProvider({ children }: TransactionItemProviderPro
     return (
         <TransactionItemContext.Provider value={{
             transactionItemId,
-            transactionItems,
             transactionItemInput,
             isNewTransactionItemModalOpen,
-            loadTransactionItems,
             handleOpenNewTransactionItemModal,
             handleOpenEditTransactionItemModal,
             handleCloseNewTransactionItemModal,
             handleChange,
             handleRadioClick,
-            handleCurrencyChange,
-            createTransactionItem,
-            updateTransactionItem,
+            handleCurrencyChange
         }}>
             {children}
         </TransactionItemContext.Provider>

@@ -4,7 +4,7 @@ import { CSpinner, CAlert } from '@coreui/react';
 
 import { Params } from '../../models/params';
 import { Layout } from '../../components/Layout';
-import { useTransactionItem } from '../../hooks/transactionItem';
+import { useTransaction } from '../../hooks/transaction';
 import { TransactionItemsTable } from '../../components/TransactionItemsTable';
 import { SearchTransactionItem } from '../../components/SearchTransactionItem';
 import { NewTransactionItemModal } from '../../components/NewTransactionItemModal';
@@ -12,19 +12,19 @@ import { NewTransactionItemModal } from '../../components/NewTransactionItemModa
 export function TransactionItems() {
     const { id } = useParams<Params>();
     const [isLoading, setIsLoading] = useState(true);
-    const { transactionItems, loadTransactionItems } = useTransactionItem();
+    const { transaction, transactionItems, loadTransactionById } = useTransaction();
 
     useEffect(() => {
-        loadTransactionItems(id);
+        loadTransactionById(id)
         setIsLoading(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id])
+    }, [])
 
     return (
         <Layout>
             <SearchTransactionItem />
             {transactionItems.length !== 0 && (
-                <TransactionItemsTable transactionId={id} transactionsItems={transactionItems} />
+                <TransactionItemsTable transaction={transaction} transactionsItems={transactionItems} />
             )}
             {transactionItems.length === 0 && (
                 <CAlert color="warning" closeButton>Nenhum item encontrado!</CAlert>

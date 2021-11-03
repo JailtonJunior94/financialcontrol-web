@@ -8,6 +8,7 @@ import {
 } from '@coreui/react';
 import { useHistory } from 'react-router';
 
+import { useTransaction } from '../../hooks/transaction';
 import { Transaction } from '../../models/transactions';
 import { formatDate, formatMoney } from '../../utils/formats';
 
@@ -25,6 +26,7 @@ interface TransactionsTableProps {
 
 export function TransactionsTable({ transactions }: TransactionsTableProps) {
     const history = useHistory();
+    const { cloneTransaction } = useTransaction();
     const fields = ['data', 'entrada', 'saida', 'total', 'detalhes', 'clone']
 
     const items = transactions.map(transaction => {
@@ -69,7 +71,7 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
                                     return (
                                         <td className="py-2">
                                             <CButton
-                                                onClick={() => history.push(`/transacoes/${item.id}`)}
+                                                onClick={() => cloneTransaction(item.id)}
                                                 className='btn btn-ghost-dark'
                                                 type='button'
                                                 block><i className='fa fa-clone'></i>

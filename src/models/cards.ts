@@ -5,6 +5,7 @@ export interface Card {
     description: string;
     closingDay: number;
     expirationDate: Date;
+    bestDayToBuy: number;
     active: string;
     flag: Flag
 }

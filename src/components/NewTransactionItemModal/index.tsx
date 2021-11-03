@@ -21,6 +21,7 @@ import { useToast } from '../../hooks/toast';
 import { TransactionTypeContainer, RadioBox } from './styles';
 import { useTransactionItem } from '../../hooks/transactionItem';
 import { CurrencyInput } from '../CurrencyInput';
+import { useTransaction } from '../../hooks/transaction';
 
 export function NewTransactionItemModal() {
     const { id } = useParams<Params>();
@@ -32,10 +33,10 @@ export function NewTransactionItemModal() {
         handleChange,
         handleRadioClick,
         handleCurrencyChange,
-        createTransactionItem,
-        updateTransactionItem,
         handleCloseNewTransactionItemModal
     } = useTransactionItem();
+
+    const { createTransactionItem, updateTransactionItem } = useTransaction();
 
     async function handleCreateNewTransactionItem(event: FormEvent) {
         event.preventDefault();
@@ -134,7 +135,7 @@ export function NewTransactionItemModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>
+                    </CButton>
                 </CModalFooter>
             </CForm>
         </CModal>
