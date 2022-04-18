@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  financialcontrol_web:
+    container_name: financialcontrol_web
+    image: financialcontrol-web
+    build:
+      context: .
+    restart: always
+    ports:
+      - "3000:80"
+    environment:
+      REACT_APP_BASE_URL_API: https://financialcontrol-api.herokuapp.com
