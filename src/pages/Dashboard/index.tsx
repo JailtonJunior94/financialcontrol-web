@@ -56,8 +56,8 @@ export function Dashboard() {
         });
         setBills(billsFilter);
 
-        const invoiceCategories = await api.get<InvoiceCategories[]>(`api/v1/cards/${cards.data[1].id}/categories?start=${month.toISOString()}&end=${month.toISOString()}`);
-        const invoices = await api.get<Invoice[]>(`api/v1/cards/${cards.data[1].id}/invoices`)
+        const invoiceCategories = await api.get<InvoiceCategories[]>(`api/v1/cards/${cards.data[0].id}/categories?start=${month.toISOString()}&end=${month.toISOString()}`);
+        const invoices = await api.get<Invoice[]>(`api/v1/cards/${cards.data[0].id}/invoices`)
 
         setInvoiceCategories(invoiceCategories.data)
         setInvoice(invoices.data);
