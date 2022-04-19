@@ -1,0 +1,40 @@
+webVersion: v1
+kind: ConfigMap
+metadata:
+  name: financialweb-config
+data:
+  REACT_APP_BASE_URL_API: "http://financialapi-service"
+---
+webVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: financialweb
+  name: financialweb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: financialweb
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: financialweb
+    spec:
+      containers:
+        - name: financialweb
+          image: jailtonjunior/financial_web:v1
+          resources:
+            limits:
+              cpu: "50m"
+              memory: "64Mi"
+          envFrom:
+            - configMapRef:
+                name: financialweb-config
+          ports:
+            - containerPort: 80
