@@ -5,7 +5,7 @@ metadata:
 data:
   REACT_APP_BASE_URL_API: "http://financialapi-service"
 ---
-webVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
