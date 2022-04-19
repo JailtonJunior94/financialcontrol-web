@@ -62,5 +62,3 @@ jobs:
           manifests: |
             .k8s/deployments/financialweb-dp.yaml
             .k8s/services/financialweb-svc.yaml
-            .k8s/certmanager/issuer.yaml
-            .k8s/ingress/ingress.yaml
