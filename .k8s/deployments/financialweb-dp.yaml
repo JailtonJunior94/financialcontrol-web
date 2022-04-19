@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: financialweb-config
 data:
-  REACT_APP_BASE_URL_API: "http://financialapi-service"
+  REACT_APP_BASE_URL_API: "https://api-financeiro.limateixeira.site"
 ---
 apiVersion: apps/v1
 kind: Deployment
