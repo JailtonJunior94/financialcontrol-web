@@ -35,7 +35,7 @@ export function Dashboard() {
             api.get<Transaction[]>('api/v1/transactions'),
             api.get<Bill[]>('api/v1/bills'),
             api.get<Card[]>('api/v1/cards')
-        ])
+        ]);
 
         const now = new Date();
         const month = new Date(now.setMonth(now.getMonth() + 1));
@@ -56,11 +56,14 @@ export function Dashboard() {
         });
         setBills(billsFilter);
 
-        const invoiceCategories = await api.get<InvoiceCategories[]>(`api/v1/cards/${cards.data[0].id}/categories?start=${month.toISOString()}&end=${month.toISOString()}`);
-        const invoices = await api.get<Invoice[]>(`api/v1/cards/${cards.data[0].id}/invoices`)
+        if (cards.data.length > 0) {
+            const invoiceCategories = await api.get<InvoiceCategories[]>(`api/v1/cards/${cards.data[0].id}/categories?start=${month.toISOString()}&end=${month.toISOString()}`);
+            const invoices = await api.get<Invoice[]>(`api/v1/cards/${cards.data[0].id}/invoices`)
+            
+            setInvoiceCategories(invoiceCategories.data)
+            setInvoice(invoices.data);
+        }
 
-        setInvoiceCategories(invoiceCategories.data)
-        setInvoice(invoices.data);
         setIsLoading(false);
     }
 
