@@ -2,6 +2,7 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 import qs from 'qs';
 
 import { api } from '../services/api';
+import { User } from '../models/user';
 
 interface AuthState {
     token: string;
@@ -14,7 +15,9 @@ export interface SignInInput {
 
 interface AuthContextData {
     authState: AuthState;
+    user: User
     signIn(input: SignInInput): Promise<void>;
+    me(): Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -49,8 +52,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.defaults.headers.authorization = `Bearer ${token}`;
     }
 
+    const [user, setUser] = useState<User>({} as User);
+    
+    async function me(): Promise<void> {
+        const response = await api.get<User>('api/v1/me');
+        setUser(response.data);
+    }
+
     return (
-        <AuthContext.Provider value={{ signIn, authState: data }}>
+        <AuthContext.Provider value={{ signIn, authState: data, me, user }}>
             {children}
         </AuthContext.Provider>
     );
