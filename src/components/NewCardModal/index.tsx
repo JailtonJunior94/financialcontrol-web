@@ -48,7 +48,7 @@ export function NewCardModal() {
             });
 
             handleCloseNewCardModal();
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao cadastrar Cartão',
@@ -138,7 +138,7 @@ export function NewCardModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>
+                    </CButton>
                 </CModalFooter>
             </CForm>
         </CModal>

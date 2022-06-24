@@ -74,17 +74,17 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
     }
 
     async function loadInvoices(cardId: string): Promise<void> {
-        const response = await api.get<Invoice[]>(`api/v1/cards/${cardId}/invoices`);
+        const response = await api.get<Invoice[]>(`/api/v1/invoices?cardId=${cardId}`);
         setInvoices(response.data);
     }
 
     async function loadInvoiceItems(cardId: string, invoiceId: string): Promise<void> {
-        const response = await api.get<InvoiceItem[]>(`api/v1/cards/${cardId}/invoices/${invoiceId}`);
+        const response = await api.get<InvoiceItem[]>(`api/v1/invoices/${invoiceId}`);
         setInvoiceItems(response.data);
     }
 
     async function createInvoice(input: NewInvoiceInput): Promise<void> {
-        await api.post<Invoice>(`api/v1/cards/${input.cardId}/invoices`, input);
+        await api.post<Invoice>(`api/v1/invoices/${input.cardId}`, input);
         await loadInvoices(input.cardId);
     }
 

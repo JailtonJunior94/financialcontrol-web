@@ -39,7 +39,7 @@ export function NewTransactionModal() {
 
             setDate('');
             handleCloseNewTransactionModal();
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao cadastrar transação',

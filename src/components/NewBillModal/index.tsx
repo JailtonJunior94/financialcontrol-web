@@ -39,7 +39,7 @@ export function NewBillModal() {
 
             setDate('');
             handleCloseNewBillModal();
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao cadastrar Conta do Mês',
@@ -77,7 +77,7 @@ export function NewBillModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>
+                    </CButton>
                 </CModalFooter>
             </CForm>
         </CModal>

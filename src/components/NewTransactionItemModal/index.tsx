@@ -48,7 +48,7 @@ export function NewTransactionItemModal() {
         try {
             await createTransactionItem(id, transactionItemInput);
             addToast({ type: 'success', title: 'Successo', description: 'Cadastrado com sucesso' });
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao cadastrar',
@@ -61,7 +61,7 @@ export function NewTransactionItemModal() {
         try {
             await updateTransactionItem(id, transactionItemId, transactionItemInput);
             addToast({ type: 'success', title: 'Successo', description: 'Editado com sucesso' });
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao editar',

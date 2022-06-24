@@ -43,7 +43,7 @@ export function NewBillItemModal() {
         try {
             await createBillItem(id, billItemInput);
             addToast({ type: 'success', title: 'Successo', description: 'Cadastrado com sucesso' });
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao cadastrar',
@@ -56,7 +56,7 @@ export function NewBillItemModal() {
         try {
             await updateBillItem(id, billItemId, billItemInput);
             addToast({ type: 'success', title: 'Successo', description: 'Editado com sucesso' });
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao editar',
@@ -102,7 +102,7 @@ export function NewBillItemModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>
+                    </CButton>
                 </CModalFooter>
             </CForm>
         </CModal>

@@ -54,7 +54,7 @@ export function NewInvoiceModal() {
             });
 
             handleCloseNewInvoiceModal();
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro ao cadastrar Compra',
@@ -153,7 +153,7 @@ export function NewInvoiceModal() {
                         className='btn-square'
                         color="info"
                         block>Salvar
-                </CButton>
+                    </CButton>
                 </CModalFooter>
             </CForm>
         </CModal>

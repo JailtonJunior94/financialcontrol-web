@@ -1,8 +1,11 @@
+import { Card } from "./cards";
+
 export interface Invoice {
     id: string;
-    cardId: string;
     date: Date;
     total: number;
+    card: Card
+    invoiceItems: InvoiceItem[]
 }
 
 export interface InvoiceItem {

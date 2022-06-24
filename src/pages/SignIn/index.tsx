@@ -44,7 +44,7 @@ export function SignIn() {
             setInput({} as SignInInput)
 
             history.push('/dashboard');
-        } catch (error) {
+        } catch (error: any) {
             addToast({
                 type: 'error',
                 title: 'Erro na autenticação',
