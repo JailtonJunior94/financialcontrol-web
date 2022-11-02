@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { api } from '../services/api';
 import { SelectInput } from '../models/selectInput';
-import { Category, Invoice, InvoiceItem } from '../models/invoices';
+import { Category, Invoice } from '../models/invoices';
 
 interface InvoicesProviderProps {
     children: ReactNode;
@@ -22,7 +22,7 @@ interface InvoicesContextData {
     isLoading: boolean;
     invoices: Invoice[];
     categories: Category[];
-    invoiceItems: InvoiceItem[];
+    invoice: Invoice;
     invoiceInput: NewInvoiceInput;
     isNewInvoiceModalOpen: boolean;
     loadCategories: () => Promise<void>;
@@ -33,7 +33,7 @@ interface InvoicesContextData {
     loadInvoices: (cardId: string) => Promise<void>;
     createInvoice: (input: NewInvoiceInput) => Promise<void>;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    loadInvoiceItems: (cardId: string, invoiceId: string) => Promise<void>;
+    loadInvoiceById: (invoiceId: string) => Promise<void>;
     handleCurrencyChange: (event: React.ChangeEvent<HTMLInputElement>, value: number, maskedValue: string) => void;
 }
 
@@ -42,7 +42,7 @@ const InvoicesContext = createContext<InvoicesContextData>({} as InvoicesContext
 export function InvoicesProvider({ children }: InvoicesProviderProps) {
     const [categories, setCategories] = useState<Category[]>([]);
     const [invoices, setInvoices] = useState<Invoice[]>([]);
-    const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
+    const [invoice, setInvoice] = useState<Invoice>({} as Invoice);
     const [isLoading, setIsLoading] = useState(false);
     const [isNewInvoiceModalOpen, setIsNewInvoiceModalOpen] = useState(false);
     const [invoiceInput, setInvoiceInput] = useState<NewInvoiceInput>({} as NewInvoiceInput);
@@ -78,9 +78,10 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
         setInvoices(response.data);
     }
 
-    async function loadInvoiceItems(cardId: string, invoiceId: string): Promise<void> {
-        const response = await api.get<InvoiceItem[]>(`api/v1/invoices/${invoiceId}`);
-        setInvoiceItems(response.data);
+    async function loadInvoiceById(invoiceId: string): Promise<void> {
+        const response = await api.get<Invoice>(`api/v1/invoices/${invoiceId}`);
+        console.log('loadInvoiceById ', response.data);
+        setInvoice(response.data);
     }
 
     async function createInvoice(input: NewInvoiceInput): Promise<void> {
@@ -115,11 +116,11 @@ export function InvoicesProvider({ children }: InvoicesProviderProps) {
             isLoading,
             categories,
             invoiceInput,
-            invoiceItems,
+            invoice,
             isNewInvoiceModalOpen,
             loadInvoices,
             loadCategories,
-            loadInvoiceItems,
+            loadInvoiceById,
             createInvoice,
             handleIsLoading,
             handleChange,
